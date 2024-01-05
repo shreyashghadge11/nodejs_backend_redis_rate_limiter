@@ -1,0 +1,27 @@
+version: '1.0'
+services:
+  nosql-db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    container_name: nosql-db
+    volumes:
+      - ./db/:/data/db
+    restart: always
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    container_name: redis
+    restart: always
+
+  server:
+    build: .
+    ports:
+      - "3000:3000"
+    container_name: server
+    depends_on:
+      - nosql-db
+      - redis
+    restart: always
